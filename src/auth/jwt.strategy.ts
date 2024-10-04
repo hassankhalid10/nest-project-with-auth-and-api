@@ -5,27 +5,27 @@ import { Model } from 'mongoose';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { User } from './schemas/user.schema';
 
-@Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {   //this is used in authorization with usegaurd
+@Injectable() // Marks the class as a provider that can be injected
+export class JwtStrategy extends PassportStrategy(Strategy) { // Extends Passport's JWT strategy for authentication
   constructor(
-    @InjectModel(User.name)
-    private userModel: Model<User>,
+    @InjectModel(User.name) // Injects the User model to interact with the database
+    private userModel: Model<User>, // Defines the user model type
   ) {
-    super({                                                     //invoke jwt strategy in super function with token and secret
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), //extract token from header
-      secretOrKey: process.env.JWT_SECRET,                      //jwt secret
+    super({ // Calls the constructor of the base class (PassportStrategy)
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // Extracts JWT token from the Authorization header
+      secretOrKey: process.env.JWT_SECRET, // Uses the secret key from environment variables to verify tokens
     });
   }
 
-  async validate(payload) {       //validate paylaod
-    const { id } = payload;
+  async validate(payload) { // Validates the JWT payload after extraction
+    const { id } = payload; // Destructures the user ID from the JWT payload
 
-    const user = await this.userModel.findById(id);
+    const user = await this.userModel.findById(id); // Looks up the user by ID in the database
 
-    if (!user) {
-      throw new UnauthorizedException('Login first to access this endpoint.');
+    if (!user) { // Checks if the user does not exist
+      throw new UnauthorizedException('Login first to access this endpoint.'); // Throws an error if the user is not found
     }
 
-    return user;
+    return user; // Returns the user object if validation is successful
   }
 }

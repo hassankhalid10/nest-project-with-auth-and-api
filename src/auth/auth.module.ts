@@ -8,24 +8,31 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { UserSchema } from './schemas/user.schema';
 
-@Module({                       
+// Define the AuthModule
+@Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt' }),    //import passport js and use jwt strategy
-    JwtModule.registerAsync({                             //import jwt module
-      inject: [ConfigService],
+    // Register Passport module with JWT strategy as the default
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+
+    // Configure and register JWT module asynchronously
+    JwtModule.registerAsync({
+      inject: [ConfigService], // Inject ConfigService to access environment variables
       useFactory: (config: ConfigService) => {
         return {
-          secret: config.get<string>('JWT_SECRET'), 
+          // Retrieve secret and expiration time from configuration
+          secret: config.get<string>('JWT_SECRET'),
           signOptions: {
-            expiresIn: config.get<string | number>('JWT_EXPIRES'),
+            expiresIn: config.get<string | number>('JWT_EXPIRES'), // Set token expiration
           },
         };
       },
     }),
-    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),    //import moongoose with schema
+
+    // Register Mongoose module for User schema
+    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]), 
   ],
-  controllers: [AuthController],              //import controller
-  providers: [AuthService, JwtStrategy],    //import services
-  exports: [JwtStrategy, PassportModule],   //export modules
+  controllers: [AuthController], // Register the AuthController
+  providers: [AuthService, JwtStrategy], // Register AuthService and JwtStrategy as providers
+  exports: [JwtStrategy, PassportModule], // Export JwtStrategy and PassportModule for use in other modules
 })
 export class AuthModule {}
