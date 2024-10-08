@@ -5,6 +5,7 @@ import { AppController } from './app.controller'; // Importing the main applicat
 import { AppService } from './app.service'; // Importing the main application service.
 import { AuthModule } from './auth/auth.module'; // Importing the authentication module.
 import { BookModule } from './book/book.module'; // Importing the book module.
+import { StudentModule } from './student/student.module'; // Importing the Student module.
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { BookModule } from './book/book.module'; // Importing the book module.
     // MongooseModule.forRoot(process.env.DB_URI), // Option to load the database URI from environment variables.
     AuthModule, // Import the AuthModule to handle authentication-related logic.
     BookModule, // Import the BookModule to handle book-related logic (e.g., CRUD operations for books).
+    StudentModule, // Import the StudentModule to handle student-related logic (e.g., CRUD operations for Student).
   ],
   controllers: [AppController], // Specify that `AppController` handles incoming requests at the root level.
   providers: [AppService], // Register the `AppService` to handle the business logic of the root module.
