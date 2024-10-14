@@ -37,6 +37,7 @@ export class BookController {
 
   // GET request to fetch a single book by its ID
   @Get(':id')
+  @UseGuards(AuthGuard())
   async getBook(
     @Param('id') id: string,  // Extracts book ID from route parameter
   ): Promise<Book> {
@@ -45,6 +46,7 @@ export class BookController {
 
   // PUT request to update an existing book by its ID
   @Put(':id')
+  @UseGuards(AuthGuard())
   async updateBook(
     @Param('id') id: string,  // Extracts book ID from route parameter
     @Body() book: UpdateBookDto,  // Accepts updated book data from request body
@@ -54,6 +56,7 @@ export class BookController {
 
   // DELETE request to remove a book by its ID
   @Delete(':id')
+  @UseGuards(AuthGuard())
   async deleteBook(
     @Param('id') id: string,  // Extracts book ID from route parameter
   ): Promise<Book> {

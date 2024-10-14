@@ -28,7 +28,7 @@ export class StudentController {
 
   // POST request to create a new student (Protected route, requires authentication)
   @Post()
-  @UseGuards(AuthGuard())   // Protects route, user must be authenticated to create a student
+  @UseGuards(AuthGuard()) // Protects route, user must be authenticated to create a student
   async createStudent(
     @Body() student: CreateStudentDto,  // Accepts student data from request body
   ): Promise<Student> {
@@ -37,6 +37,7 @@ export class StudentController {
 
   // GET request to fetch a single student by their ID
   @Get(':id')
+  @UseGuards(AuthGuard())
   async getStudent(
     @Param('id') id: string,  // Extracts student ID from route parameter
   ): Promise<Student> {
@@ -45,6 +46,7 @@ export class StudentController {
 
   // PUT request to update an existing student by their ID
   @Put(':id')
+  @UseGuards(AuthGuard())
   async updateStudent(
     @Param('id') id: string,  // Extracts student ID from route parameter
     @Body() student: UpdateStudentDto,  // Accepts updated student data from request body
@@ -54,6 +56,7 @@ export class StudentController {
 
   // DELETE request to remove a student by their ID
   @Delete(':id')
+  @UseGuards(AuthGuard())
   async deleteStudent(
     @Param('id') id: string,  // Extracts student ID from route parameter
   ): Promise<Student> {
